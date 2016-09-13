@@ -1,0 +1,10 @@
+include README.md
+recursive-include scripts *.bat
+recursive-include scripts *.py
+recursive-include speedyfx *.csv
+recursive-include speedyfx *.csv.gz
+recursive-include speedyfx *.py
+recursive-include examples *.py
+recursive-include examples *.csv
+recursive-include examples *.csv.gz
+recursive-include examples *.png
