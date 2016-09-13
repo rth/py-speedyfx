@@ -2,6 +2,8 @@
 
 Python implementation of the SpeedyFx algorithm
 
+[![Build Status](https://travis-ci.org/rth/py-speedyfx.svg?branch=master)](https://travis-ci.org/rth/py-speedyfx)
+
 
 ## Installation notes
 
