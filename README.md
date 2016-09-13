@@ -1,25 +1,23 @@
-# UV spectra regression tools 
+# py-speedyfx
 
-Trace Ability, Inc. 
-
+Python implementation of the SpeedyFx algorithm
 
 
 ## Installation notes
 
- This package requires Python 2.7 or 3.2-3.5 with the following modules installed: `numpy>=1.9`, `scipy`, `pandas`, `matplotlib`, `scikit-learn`, `six`, `setuptools`, `nose`.
+ This package requires Python 2.7 or 3.2-3.5 with the following modules installed: `numpy>=1.9`, `scipy`, `six`, `setuptools`, `nose`.
 
  To install this module run,
     
-    python setup.py install
+    python setup.py git+https://github.com/rth/py-speedyfx.git
 
 
 ## Unit tests
 
  The unit tests suite can be run from the command line,
 
-    $ cd taspectreg/tests/
-    $ nosetests -s .
+    $ nosetests -s speedyfx/tests/
 
 or from within Python with,
  
-    import taspectreg.tests; taspectreg.tests.run()
+    import speedyfx.tests; speedyfx.tests.run()
