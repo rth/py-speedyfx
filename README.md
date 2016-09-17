@@ -1,12 +1,14 @@
 # py-speedyfx
 
-SpeedyFx: Fast Text Feature Extraction for Classification and Indexing (Python implementation)
+py-SpeedyFx: Fast Text Feature Extraction for Classification and Indexing (Python implementation)
 
 [![Build Status](https://travis-ci.org/rth/py-speedyfx.svg?branch=master)](https://travis-ci.org/rth/py-speedyfx) 
 [![Build status](https://ci.appveyor.com/api/projects/status/6qdvqc475g5pyflm/branch/master?svg=true)](https://ci.appveyor.com/project/rth/py-speedyfx/branch/master)
 
+The goal of this package is to provide an implementation of the SpeedyFx algorithm with a scikit-learn compatible API, so it can be used as a drop in replacement for scikit-learn's `HashingVectorizer`.
 
-**Note:** this package is in early developement phase and should not be used in production. The public API can change in a non backward compatible manner without warning.
+
+**Note:** this package is in early development phase and should not be used in production. The public API can change in a non backward compatible manner without warning.
 
 
 ## Installation notes
