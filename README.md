@@ -1,6 +1,6 @@
 # py-speedyfx
 
-Python implementation of the SpeedyFx algorithm
+SpeedyFx: Fast Text Feature Extraction for Classification and Indexing (Python implementation)
 
 [![Build Status](https://travis-ci.org/rth/py-speedyfx.svg?branch=master)](https://travis-ci.org/rth/py-speedyfx)
 
@@ -23,3 +23,7 @@ Python implementation of the SpeedyFx algorithm
 or from within Python with,
  
     import speedyfx.tests; speedyfx.tests.run()
+    
+## References
+  
+  * ["Extremely fast text feature extraction for classification and indexing"](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.170.8670&rep=rep1&type=pdf) by G Forman, E Kirshenbaum (2008)
