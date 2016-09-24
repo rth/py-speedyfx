@@ -7,7 +7,7 @@ from __future__ import print_function
 
 import sys
 import numpy as np
-from .externals import BaseEstimator, VectorizerMixin
+from .externals import BaseEstimator, VectorizerMixin#, normalize
 
 
 class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
@@ -140,13 +140,16 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
         X : scipy.sparse matrix, shape = (n_samples, self.n_features)
             Document-term matrix.
         """
-        #analyzer = self.build_analyzer()
-        #X = self._get_hasher().transform(analyzer(doc) for doc in X)
+        res = []
+
+        X = [self._transform_single(self.decode(el)) for el in X]
         #if self.binary:
         #    X.data.fill(1)
         #if self.norm is not None:
         #    X = normalize(X, norm=self.norm, copy=False)
-        #return X
+        return res
+
+    def _transform_single(self, X):
         result = {}
         wordhash = 0
 
