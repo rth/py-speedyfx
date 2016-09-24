@@ -7,6 +7,7 @@ from __future__ import print_function
 
 import sys
 import numpy as np
+import scipy.sparse
 from .externals import BaseEstimator, VectorizerMixin#, normalize
 
 
@@ -114,6 +115,8 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
         self.non_negative = non_negative
         self.dtype = dtype
 
+        self._init_hashing_table()
+
 
     def partial_fit(self, X, y=None):
         """Does nothing: this transformer is stateless.
@@ -140,37 +143,57 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
         X : scipy.sparse matrix, shape = (n_samples, self.n_features)
             Document-term matrix.
         """
-        res = []
 
-        X = [self._transform_single(self.decode(el)) for el in X]
+        X = self._transform(X)
         #if self.binary:
         #    X.data.fill(1)
         #if self.norm is not None:
         #    X = normalize(X, norm=self.norm, copy=False)
-        return res
+        return X
 
-    def _transform_single(self, X):
-        result = {}
-        wordhash = 0
 
-        for c in X:
-            code = self.code_table[ord(c) % self.length]
-            if (code):
-                wordhash = (wordhash >> 1) + code
-            elif (wordhash):
-                if (wordhash in result):
+    def _transform(self, X):
+        j_indices = []
+        indptr = []
+        values = []
+        indptr.append(0)
+        for doc in X:
+            doc_dec = self.decode(doc)
+
+            result = {}
+            wordhash = 0
+            for c in doc_dec:
+                code = self.code_table[ord(c) % self.length]
+                if code:
+                    wordhash = (wordhash >> 1) + code
+                elif wordhash:
+                    if wordhash in result:
+                        result[wordhash] += 1
+                    else:
+                        result[wordhash] = 1
+                    wordhash = 0
+
+
+            if wordhash:
+                if wordhash in result:
                     result[wordhash] += 1
                 else:
                     result[wordhash] = 1
-                wordhash = 0
 
-        if (wordhash):
-            if (wordhash in result):
-                result[wordhash] += 1
-            else:
-                result[wordhash] = 1
+            #result_all.append(result)
+            j_indices.extend(result.keys())
+            values.extend(result.values())
+            indptr.append(len(j_indices))
 
-        return result
+        j_indices = np.asarray(j_indices, dtype=np.uintc)
+        indptr = np.asarray(indptr, dtype=np.uintc)
+        values = np.asarray(values, dtype=np.uintc)
+
+        X = scipy.sparse.csr_matrix((values, j_indices, indptr),
+                          shape=(len(indptr) - 1, j_indices.max() + 1),
+                          dtype=self.dtype)
+        X.sort_indices()
+        return X
 
     # Alias transform to fit_transform for convenience
     fit_transform = transform
@@ -193,7 +216,7 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
             rand_table[i] %= 0xfffffffb
 
         for i in range(self.length):
-            if (fold_table[i]):
+            if fold_table[i]:
                 self.code_table[i] = rand_table[fold_table[i]]
 
 
@@ -213,8 +236,3 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
             minhash = min(minhash, wordhash)
 
         return minhash
-
-#sfx = SpeedyFx()
-#str = 'To be or not to be?'
-#print sfx.hash(str)
-#print sfx.hash_min(str)

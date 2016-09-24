@@ -29,8 +29,9 @@ def _sklearn_installed():
     except ImportError:
         return 0
 
+
 skip_if_sklearn_missing = pytest.mark.skipif(
-                        not  _sklearn_installed,
+                        not  _sklearn_installed(),
                         reason="scikit-learn not instaled")
 
 
