@@ -34,5 +34,8 @@ nosetests.xml
 .project
 .pydevproject
 
+# vim
+.*.swp
+
 # py.test 
 .cache
