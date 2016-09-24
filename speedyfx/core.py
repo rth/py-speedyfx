@@ -7,9 +7,10 @@ from __future__ import print_function
 
 import sys
 import numpy as np
+from .externals import BaseEstimator, VectorizerMixin
 
 
-class SpeedyFxVectorizer(object):
+class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
     """Convert a collection of text documents to a matrix of token occurrences
 
     Parameters
