@@ -24,7 +24,7 @@ install:
     - conda install --yes $DEPS pip pytest
     - conda info -a
     - which python
-    - if [ ${SKLEARN} == "1" ]; then pip install scikit-learn==0.18rc2; fi
+    - if [ ${SKLEARN} == "1" ]; then pip install scikit-learn==0.18rc2 nose; fi
     - python setup.py build_ext --inplace
     - python setup.py install
     - cd ..

@@ -13,7 +13,7 @@ The goal of this package is to provide an implementation of the SpeedyFx algorit
 
 ## Installation notes
 
- This package requires Python 2.7 or 3.2-3.5 with the following modules installed: `numpy>=1.9`, `scipy`, `cython`, `setuptools`, `six` (and optionally `py.test`).
+ This package requires Python 2.7 or 3.2-3.5 with the following modules installed: `numpy>=1.9`, `scipy`, `cython`, `setuptools`, `six` (and optionally `pytest`, `scikit-learn` and `nose` [for the running the test suite only] ).
 
  To install this module run,
     
