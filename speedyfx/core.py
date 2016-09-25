@@ -115,6 +115,10 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
         self.non_negative = non_negative
         self.dtype = dtype
 
+        if encoding != 'latin1':
+            raise ValueError('encoding={} not supported!'.format(encoding))
+
+
         self._init_hashing_table()
 
 
