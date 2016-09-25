@@ -39,3 +39,6 @@ nosetests.xml
 
 # py.test 
 .cache
+
+*.html
+*.c
