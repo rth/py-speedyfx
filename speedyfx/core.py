@@ -153,41 +153,17 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
 
 
     def _transform(self, X):
-        j_indices = []
-        indptr = []
-        values = []
-        indptr.append(0)
-        for doc in X:
-            doc_dec = self.decode(doc)
+        from ._hashing import _speedy_transform
 
-            result = {}
-            wordhash = 0
-            for c in doc_dec:
-                code = self.code_table[ord(c) % self.length]
-                if code:
-                    wordhash = (wordhash >> 1) + code
-                elif wordhash:
-                    if wordhash in result:
-                        result[wordhash] += 1
-                    else:
-                        result[wordhash] = 1
-                    wordhash = 0
-
-
-            if wordhash:
-                if wordhash in result:
-                    result[wordhash] += 1
-                else:
-                    result[wordhash] = 1
-
-            #result_all.append(result)
-            j_indices.extend(result.keys())
-            values.extend(result.values())
-            indptr.append(len(j_indices))
+        j_indices, indptr, values = _speedy_transform(
+                [self.decode(el) for el in X],
+                self.code_table,
+                self.length)
 
         j_indices = np.asarray(j_indices, dtype=np.int64)
         indptr = np.asarray(indptr, dtype=np.uintc)
         values = np.asarray(values, dtype=np.uintc)
+
 
         X = scipy.sparse.csr_matrix((values, j_indices, indptr),
                           shape=(len(indptr) - 1, j_indices.max() + 1),
@@ -218,6 +194,7 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
         for i in range(self.length):
             if fold_table[i]:
                 self.code_table[i] = rand_table[fold_table[i]]
+        self.code_table = np.array(self.code_table)
 
 
     def hash_min(self, string):

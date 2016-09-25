@@ -19,7 +19,13 @@ reload(speedyfx)
 def size_mb(docs):
     return sum(len(s.encode('utf-8')) for s in docs) / 1e6
 
-categories = ['sci.space']
+categories = ['sci.space',
+         'rec.motorcycles',
+         'rec.sport.baseball',
+         'rec.sport.hockey',
+         'sci.crypt',
+         'sci.electronics',
+        ]
 
 data = fetch_20newsgroups(categories=categories)
 

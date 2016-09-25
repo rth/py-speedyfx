@@ -18,8 +18,10 @@ def test_external_imports():
 @skip_if_sklearn_missing
 def test_sklearn_compatibility():
     from sklearn.utils.estimator_checks import check_estimator
-    raise SkipTest
-    check_estimator(SpeedyFxVectorizer)
+    from sklearn.feature_extraction.text import HashingVectorizer
+    raise SkipTest # the HashingVecotorizer itself fails this test
+    #check_estimator(SpeedyFxVectorizer)
+    #check_estimator(HashingVectorizer)
 
 
 
@@ -33,7 +35,6 @@ def test_speedy_tiny():
     res = vect.transform(doc)
     for idx in [828691033, 2983498205]:
         assert res[0, idx] == 1.0
-    print(res)
 
 
 def test_speedy_tiny_stacked():
