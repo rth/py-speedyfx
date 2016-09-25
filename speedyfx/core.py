@@ -185,7 +185,7 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
             values.extend(result.values())
             indptr.append(len(j_indices))
 
-        j_indices = np.asarray(j_indices, dtype=np.uintc)
+        j_indices = np.asarray(j_indices, dtype=np.int64)
         indptr = np.asarray(indptr, dtype=np.uintc)
         values = np.asarray(values, dtype=np.uintc)
 

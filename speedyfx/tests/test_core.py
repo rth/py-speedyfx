@@ -33,6 +33,7 @@ def test_speedy_tiny():
     res = vect.transform(doc)
     for idx in [828691033, 2983498205]:
         assert res[0, idx] == 1.0
+    print(res)
 
 
 def test_speedy_tiny_stacked():
@@ -41,7 +42,6 @@ def test_speedy_tiny_stacked():
 
     vect = SpeedyFxVectorizer(norm=None)
     res = vect.transform(doc)
-    print(res)
     for ridx in range(2):
         for idx in [828691033, 2983498205]:
             assert res[ridx, idx] == 1.0
