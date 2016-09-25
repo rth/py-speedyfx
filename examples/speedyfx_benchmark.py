@@ -33,7 +33,7 @@ data_size_mb = size_mb(data.data)
 
 print('\nPerformance benchmark on 20 newsgroups dataset ({:.2} MB)\n'.format(data_size_mb))
 for vect in [HashingVectorizer, speedyfx.SpeedyFxVectorizer]:
-    hv = vect(norm=None)
+    hv = vect(norm=None, encoding='latin1')
     t0 = time()
     X = hv.transform(data.data)
     dt = time() - t0

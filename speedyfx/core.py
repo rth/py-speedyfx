@@ -9,6 +9,7 @@ import sys
 import numpy as np
 import scipy.sparse
 from .externals import BaseEstimator, VectorizerMixin#, normalize
+from speedyfx._hashing import _speedy_transform
 
 
 class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
@@ -157,7 +158,6 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
 
 
     def _transform(self, X):
-        from ._hashing import _speedy_transform
 
         j_indices, indptr, values = _speedy_transform(
                 [self.decode(el) for el in X],

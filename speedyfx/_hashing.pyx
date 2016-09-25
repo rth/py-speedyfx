@@ -12,12 +12,11 @@ cimport numpy as np
 cimport cython
 
 
-cpdef _transform_single_ascii(str doc, long [:] code_table, int length):
+cpdef _transform_single_ascii(doc, long [:] code_table, int length):
     cdef long wordhash = 0
     cdef long code
     cdef dict result = {}
     cdef int idx
-    cdef str c
     for c in doc:
         idx = ord(c) % length
         code = code_table[idx]
@@ -43,7 +42,6 @@ cpdef _speedy_transform(list X,  code_table, int length):
     j_indices = []
     indptr = []
     values = []
-    cdef str doc_dec
     indptr.append(0)
     for doc_dec in X:
         result = _transform_single_ascii(doc_dec, code_table, length)
@@ -55,25 +53,25 @@ cpdef _speedy_transform(list X,  code_table, int length):
     return j_indices, indptr, values
 
 
-cpdef _transform_single_unicode(doc, long [:] code_table, int length):
-    cdef dict result = {}
-    cdef long wordhash = 0
-    for c in doc:
-        code = code_table[ord(c) % length]
-        if code:
-            wordhash = (wordhash >> 1) + code
-        elif wordhash:
-            if wordhash in result:
-                result[wordhash] += 1
-            else:
-                result[wordhash] = 1
-            wordhash = 0
-
-
-    if wordhash:
-        if wordhash in result:
-            result[wordhash] += 1
-        else:
-            result[wordhash] = 1
-    return result
+#cpdef _transform_single_unicode(doc, long [:] code_table, int length):
+#    cdef dict result = {}
+#    cdef long wordhash = 0
+#    for c in doc:
+#        code = code_table[ord(c) % length]
+#        if code:
+#            wordhash = (wordhash >> 1) + code
+#        elif wordhash:
+#            if wordhash in result:
+#                result[wordhash] += 1
+#            else:
+#                result[wordhash] = 1
+#            wordhash = 0
+#
+#
+#    if wordhash:
+#        if wordhash in result:
+#            result[wordhash] += 1
+#        else:
+#            result[wordhash] = 1
+#    return result
 

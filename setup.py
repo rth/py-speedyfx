@@ -34,7 +34,6 @@ else:
 libraries = []
 if os.name == 'posix':
     libraries.append('m')
-    libraries.append('stdc++')
 include_dirs= [ np.get_include() ]
 
 ext_modules=[
