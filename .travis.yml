@@ -2,16 +2,17 @@ language: python
 sudo: false
 matrix:
     include:
-    - python: "3.3"
-      env: DEPS="numpy scipy nose cython"
     - python: "3.5"
-      env: DEPS="numpy scipy nose cython"
+      env: SKLEARN="1" DEPS="numpy scipy cython six"
+    - python: "3.5"
+      env: SKLEARN="0" DEPS="numpy scipy cython six"
+    - python: "3.3"
+      env: SKLEARN="1" DEPS="numpy scipy cython six"
     - python: "2.7"
-      env: DEPS="numpy=1.10.4 scipy=0.17 nose cython"
+      env: SKLEARN="1" DEPS="numpy=1.10.4 scipy=0.17 cython six"
 
-# setup adapted from https://github.com/soft-matter/trackpy/blob/master/.travis.yml
 before_install:
-    - if [ ${TRAVIS_PYTHON_VERSION:0:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
+    - wget http://repo.continuum.io/miniconda/Miniconda${TRAVIS_PYTHON_VERSION:0:1}-latest-Linux-x86_64.sh -O miniconda.sh
     - chmod +x miniconda.sh
     - ./miniconda.sh -b
     - export PATH=/home/travis/miniconda${TRAVIS_PYTHON_VERSION:0:1}/bin:$PATH
@@ -20,19 +21,17 @@ before_install:
 
 install: 
     - conda install --yes -c conda conda-env
-    - conda install --yes $DEPS pip
+    - conda install --yes $DEPS pip pytest
     - conda info -a
-    - pip install coveralls 
     - which python
+    - if [ ${SKLEARN} == "1" ]; then pip install scikit-learn==0.18rc2 nose; fi
     - python setup.py build_ext --inplace
     - python setup.py install
     - cd ..
 
 
-# command to run tests
 script: 
-    - nosetests ./py-speedyfx/speedyfx/tests/ --with-coverage --cover-package=speedyfx
-#    - coverage run --source=hedp ./hedp/tests/run.py
+    - py.test -sv ./py-speedyfx/speedyfx/
 
 #after_success:
 #    coveralls

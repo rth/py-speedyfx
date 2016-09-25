@@ -32,7 +32,7 @@ install:
   - conda update -q conda
   - conda info -a
   # create a conda virtual environement 
-  - "conda create -n speedyfx-env numpy=1.10 scipy cython nose python=%PYTHON_VERSION%"
+  - "conda create -n speedyfx-env numpy=1.10 scipy cython pytest six python=%PYTHON_VERSION%"
   - activate speedyfx-env
   - python setup.py install
 
@@ -41,4 +41,4 @@ install:
 test_script:
   - "cd C:\\projects"
   - activate speedyfx-env # activate the virtualenv
-  - nosetests ./py-speedyfx/speedyfx/tests/ --with-coverage --cover-package=speedyfx
+  - py.test -sv ./py-speedyfx/speedyfx/

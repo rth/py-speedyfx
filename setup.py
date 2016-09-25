@@ -27,3 +27,6 @@ setup(name='speedyfx',
       include_package_data=True,
      )
 
+
+# conda create -n speedyfx-nskl-env setuptools six cython scipy numpy pytest python=3.5
+# conda env remove -n speedyfx-nskl-env
