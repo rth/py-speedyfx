@@ -31,15 +31,10 @@
  * Average feature vector build speed: 213.83 MB/s
  */
 
-#define MAP_SIZE 256
-
 #define SetBit(a, b) (((unsigned char *) a)[(b) >> 3] |= (1 << ((b) & 7)))
 
-static unsigned int length = MAP_SIZE;
-static unsigned int code_table[MAP_SIZE];
-
-
-unsigned char *speedyfx_fv(const unsigned char *s, unsigned int n) {
+unsigned char *speedyfx_fv(const unsigned char *s, unsigned int *code_table,
+                                        unsigned int n, unsigned int length) {
     unsigned int code, c;
     unsigned int wordhash = 0;
     unsigned char *fv;
@@ -61,3 +56,10 @@ unsigned char *speedyfx_fv(const unsigned char *s, unsigned int n) {
 
     return fv;
 }
+
+
+int speedyfx_free(unsigned char * fv) {
+    free(fv);
+    return 0;
+}
+    

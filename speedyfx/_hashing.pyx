@@ -11,6 +11,11 @@ cimport numpy as np
 
 cimport cython
 
+cdef extern from "lib/speedyfx.h":
+    cdef unsigned char *speedyfx_fv(const unsigned char *s, unsigned int *code_table,
+                                        unsigned int n, unsigned int length);
+    cdef int speedyfx_free(unsigned char * fv);
+
 
 cpdef _transform_single_ascii(doc, long [:] code_table, int length):
     cdef long wordhash = 0
@@ -38,17 +43,36 @@ cpdef _transform_single_ascii(doc, long [:] code_table, int length):
     return result
 
 
-cpdef _speedy_transform(list X,  code_table, int length):
+cpdef _speedy_transform(list X, unsigned int [:] code_table, int length):
+    cdef size_t fv_length = 1024 * 1024;
+    cdef size_t idx;
+    cdef unsigned int n = 256
+
     j_indices = []
     indptr = []
     values = []
     indptr.append(0)
-    for doc_dec in X:
-        result = _transform_single_ascii(doc_dec, code_table, length)
+    cdef unsigned char *doc
+    cdef str doc_enc
+    cdef unsigned char* fv
+    for doc_enc in X:
+        doc_tmp = str.encode(doc_enc)
+        doc = doc_tmp
+        #result = _transform_single_ascii(doc_dec, code_table, length)
+        #print(type(doc_dec))
+        
 
-        j_indices.extend(result.keys())
-        values.extend(result.values())
-        indptr.append(len(j_indices))
+        fv = speedyfx_fv(&doc[0], &code_table[0], fv_length, n)
+
+        #for idx in range(fv_length//8):
+        #    if fv[idx] != 0:
+        #        #print(idx, fv[idx])
+
+
+        #j_indices.extend(result.keys())
+        #values.extend(result.values())
+        #indptr.append(len(j_indices))
+        speedyfx_free(fv)
 
     return j_indices, indptr, values
 
@@ -75,3 +99,5 @@ cpdef _speedy_transform(list X,  code_table, int length):
 #            result[wordhash] = 1
 #    return result
 
+# http://semashare.net/ngrams/linux/index.htm
+# https://en.wikipedia.org/wiki/Suffix_array

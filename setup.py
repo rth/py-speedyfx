@@ -38,7 +38,7 @@ include_dirs= [ np.get_include() ]
 
 ext_modules=[
     Extension("speedyfx._hashing",
-             ["speedyfx/_hashing.pyx"],
+             ["speedyfx/_hashing.pyx", "speedyfx/lib/speedyfx.c"],
              libraries=libraries,
              **compile_args),
 ]

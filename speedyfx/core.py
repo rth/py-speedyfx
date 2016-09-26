@@ -164,15 +164,15 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
                 self.code_table,
                 self.length)
 
-        j_indices = np.asarray(j_indices, dtype=np.int64)
-        indptr = np.asarray(indptr, dtype=np.uintc)
-        values = np.asarray(values, dtype=np.uintc)
+        #j_indices = np.asarray(j_indices, dtype=np.int64)
+        #indptr = np.asarray(indptr, dtype=np.uintc)
+        #values = np.asarray(values, dtype=np.uintc)
 
 
-        X = scipy.sparse.csr_matrix((values, j_indices, indptr),
-                          shape=(len(indptr) - 1, j_indices.max() + 1),
-                          dtype=self.dtype)
-        X.sort_indices()
+        #X = scipy.sparse.csr_matrix((values, j_indices, indptr),
+        #                  shape=(len(indptr) - 1, j_indices.max() + 1),
+        #                  dtype=self.dtype)
+        #X.sort_indices()
         return X
 
     # Alias transform to fit_transform for convenience
@@ -198,7 +198,7 @@ class SpeedyFxVectorizer(BaseEstimator, VectorizerMixin):
         for i in range(self.length):
             if fold_table[i]:
                 self.code_table[i] = rand_table[fold_table[i]]
-        self.code_table = np.array(self.code_table)
+        self.code_table = np.array(self.code_table, dtype='uint32')
 
 
     def hash_min(self, string):
